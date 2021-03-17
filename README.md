@@ -1,24 +1,20 @@
-# README
+# Шаблон приложения RoR + Vue
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
 
-Things you may want to cover:
+Шаблон RoR-приложения с фронтом на Vue и аутентификацией посредством Devise.
 
-* Ruby version
+Стек: 
+- аутентификация - devise;
+- фронтэнд - vue;
 
-* System dependencies
+## Built With
 
-* Configuration
+* Ruby - 2.6.5
+* Rails - 6.0.3.5
+* Vue - 2.6.12
+* Node - 10.13.0
 
-* Database creation
+## Authors
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Baidin Maxim - *Creator* - [the_scrubs_fan](https://github.com/TheScrubsFan)
