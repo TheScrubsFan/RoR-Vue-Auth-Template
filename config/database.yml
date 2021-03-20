@@ -5,12 +5,12 @@ default: &default
 
 development:
   <<: *default
-  database: db/template_development
+  database: db/template_solid_development
 
 test:
   <<: *default
-  database: db/template_test
+  database: db/template_solid_test
 
 production:
   <<: *default
-  database: db/template_production
+  database: db/template_solid_production

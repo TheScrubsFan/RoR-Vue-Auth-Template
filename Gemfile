@@ -5,9 +5,11 @@ ruby '2.6.5'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'jbuilder', '~> 2.7'
+gem 'jwt'
 gem 'pg'
 gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
+gem 'rubocop'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
