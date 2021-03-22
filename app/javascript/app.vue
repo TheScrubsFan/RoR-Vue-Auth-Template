@@ -1,17 +1,14 @@
 <template>
   <div id="app">
-    <p>{{ message }}</p>
+    <router-link to="/sign_in">Войти</router-link>
+    <router-link to="/sign_up">Зарегистрироваться</router-link>
+
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
-  }
-}
+export default {}
 </script>
 
 <style scoped>
