@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <router-link to="/sign_in">Войти</router-link>
-    <router-link to="/sign_up">Зарегистрироваться</router-link>
-
-    <router-view></router-view>
+    <v-app>
+      <router-view></router-view>
+    </v-app>
   </div>
 </template>
 
