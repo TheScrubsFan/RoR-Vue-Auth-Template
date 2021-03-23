@@ -7,6 +7,7 @@ import SignUp from '../components/sign_up.vue'
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: '/sign_in',
