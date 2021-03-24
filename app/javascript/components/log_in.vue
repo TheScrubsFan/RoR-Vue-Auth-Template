@@ -19,11 +19,17 @@
               <v-form ref="loginForm" v-model="valid" lazy-validation>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="loginEmail" label="E-mail" required></v-text-field>
+                    <v-text-field
+                      v-model="loginEmail"
+                      :rules="[rules.required, rules.emailFormat]"
+                      label="E-mail"
+                      required>
+                    </v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
                       v-model="loginPassword"
+                      :rules="[rules.required, rules.min]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
                       name="input-10-1"
@@ -36,7 +42,7 @@
                   <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
                   <v-spacer></v-spacer>
                   <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                    <v-btn x-large block :disabled="!valid" color="success" @click=""> Login </v-btn>
+                    <v-btn x-large block :disabled="!valid" color="success" @click="login"> Login </v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -50,14 +56,26 @@
               <v-form ref="registerForm" v-model="valid" lazy-validation>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="name" label="Name" maxlength="20" required></v-text-field>
+                    <v-text-field
+                      v-model="name"
+                      :rules="[rules.required]"
+                      label="Name"
+                      maxlength="20"
+                      required>
+                    </v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field v-model="email" label="E-mail" required></v-text-field>
+                    <v-text-field
+                      v-model="email"
+                      :rules="[rules.required, rules.emailFormat]"
+                      label="E-mail"
+                      required>
+                    </v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
                       v-model="password"
+                      :rules="[rules.required, rules.min]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
                       name="input-10-1"
@@ -70,6 +88,7 @@
                   <v-col cols="12">
                     <v-text-field block
                       v-model="verify"
+                      :rules="[rules.required, rules.min, passwordMatch]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
                       name="input-10-1"
@@ -80,7 +99,7 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                    <v-btn x-large block :disabled="!valid" color="success" @click="">Register</v-btn>
+                    <v-btn x-large block :disabled="!valid" color="success" @click="register">Register</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -96,6 +115,23 @@
 
 <script>
 export default {
+  computed: {
+    passwordMatch() {
+      return () => this.password === this.verify || "Password must match";
+    },
+  },
+  methods: {
+    login() {
+      if (this.$refs.loginForm.validate()) {
+        console.log('login')
+      }
+    },
+    register() {
+      if (this.$refs.registerForm.validate()) {
+        console.log('register')
+      }
+    }
+  },
   data: () => ({
     dialog: true,
     tab: 0,
@@ -107,6 +143,11 @@ export default {
     verify: "",
     loginPassword: "",
     loginEmail: "",
+    rules: {
+      required: value => !!value || "Required.",
+      min: v => (v && v.length >= 8) || "Min 8 characters",
+      emailFormat: v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+    }
   })
 }
 </script>
