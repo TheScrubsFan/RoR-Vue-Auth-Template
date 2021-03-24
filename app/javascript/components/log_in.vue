@@ -114,6 +114,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   computed: {
     passwordMatch() {
@@ -123,12 +125,30 @@ export default {
   methods: {
     login() {
       if (this.$refs.loginForm.validate()) {
-        console.log('login')
+        let params = {
+          email: this.loginEmail,
+          password: this.loginPassword
+        }
+        let url = '/api/token/create'
+
+        axios
+          .post(url, params)
+          .then(response => (console.log(response)))
       }
     },
     register() {
       if (this.$refs.registerForm.validate()) {
-        console.log('register')
+        let params = {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confimation: this.verify
+        }
+        let url = '/api/registration'
+
+        axios
+          .post(url, params)
+          .then(response => (console.log(response)))
       }
     }
   },
