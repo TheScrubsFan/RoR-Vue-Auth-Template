@@ -129,7 +129,7 @@ export default {
           email: this.loginEmail,
           password: this.loginPassword
         }
-        let url = '/api/token/create'
+        let url = '/api/tokens/create'
 
         axios
           .post(url, params)
@@ -144,7 +144,7 @@ export default {
           password: this.password,
           password_confimation: this.verify
         }
-        let url = '/api/registration'
+        let url = '/api/registrations'
 
         axios
           .post(url, params)
