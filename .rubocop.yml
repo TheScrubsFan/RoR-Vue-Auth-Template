@@ -3,6 +3,7 @@ AllCops:
   Exclude:
     - 'Gemfile'
     - 'bin/*'
+    - 'db/**/*'
     - 'config/**/*'
     - 'node_modules/**/*'
     - 'vendor/**/*'

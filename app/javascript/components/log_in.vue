@@ -1,5 +1,4 @@
 <template>
-
   <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
     <div>
       <v-tabs v-model="tab" show-arrows background-color="orange accent-4" icons-and-text dark grow>
@@ -20,7 +19,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      v-model="loginEmail"
+                      v-model="user.email"
                       :rules="[rules.required, rules.emailFormat]"
                       label="E-mail"
                       required>
@@ -28,7 +27,7 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
-                      v-model="loginPassword"
+                      v-model="user.password"
                       :rules="[rules.required, rules.min]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
@@ -115,6 +114,7 @@
 
 <script>
 import axios from 'axios'
+import User from '../models/user'
 
 export default {
   computed: {
@@ -125,17 +125,19 @@ export default {
   methods: {
     login() {
       if (this.$refs.loginForm.validate()) {
-        let params = {
-          email: this.loginEmail,
-          password: this.loginPassword
-        }
-        let url = '/api/tokens/create'
-
-        axios
-          .post(url, params)
-          .then(response => (console.log(response)))
+        this.$store.dispatch('auth/login', this.user).then(
+          () => {
+            //this.$router.push('/profile');
+            console.warn('success')
+            //this.dialog = false
+          },
+          error => {
+            cosole.log(error)
+          }
+        )
       }
     },
+
     register() {
       if (this.$refs.registerForm.validate()) {
         let params = {
@@ -153,6 +155,7 @@ export default {
     }
   },
   data: () => ({
+    user: new User({}),
     dialog: true,
     tab: 0,
     valid: true,
@@ -161,8 +164,6 @@ export default {
     email: "",
     password: "",
     verify: "",
-    loginPassword: "",
-    loginEmail: "",
     rules: {
       required: value => !!value || "Required.",
       min: v => (v && v.length >= 8) || "Min 8 characters",
