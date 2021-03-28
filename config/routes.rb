@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     post 'tokens/create'
     post 'tokens/refresh'
+    post 'registrations/signup'
   end
 
   get "/*path", to: "home#index", format: false

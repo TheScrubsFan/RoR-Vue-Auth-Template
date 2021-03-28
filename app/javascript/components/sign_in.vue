@@ -21,6 +21,54 @@
                     <v-text-field
                       v-model="user.email"
                       :rules="[rules.required, rules.emailFormat]"
+                      label="Адрес электронной почты"
+                      required>
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="user.password"
+                      :rules="[rules.required, rules.min]"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="showPassword ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="Пароль"
+                      hint="At least 8 characters"
+                      counter
+                      @click:append="showPassword = !showPassword">
+                    </v-text-field>
+                  </v-col>
+                  <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
+                  <v-spacer></v-spacer>
+                  <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
+                    <v-btn x-large block :disabled="!valid" color="success" @click="login">
+                      Войти
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab-item>
+          <v-card class="px-4">
+            <v-card-text>
+              <v-form ref="registerForm" v-model="valid" lazy-validation>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="user.name"
+                      :rules="[rules.required]"
+                      label="Name"
+                      maxlength="20"
+                      required>
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="user.email"
+                      :rules="[rules.required, rules.emailFormat]"
                       label="E-mail"
                       required>
                     </v-text-field>
@@ -38,55 +86,9 @@
                       @click:append="showPassword = !showPassword">
                     </v-text-field>
                   </v-col>
-                  <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
-                  <v-spacer></v-spacer>
-                  <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                    <v-btn x-large block :disabled="!valid" color="success" @click="login"> Login </v-btn>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-card class="px-4">
-            <v-card-text>
-              <v-form ref="registerForm" v-model="valid" lazy-validation>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="name"
-                      :rules="[rules.required]"
-                      label="Name"
-                      maxlength="20"
-                      required>
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="email"
-                      :rules="[rules.required, rules.emailFormat]"
-                      label="E-mail"
-                      required>
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="password"
-                      :rules="[rules.required, rules.min]"
-                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="showPassword ? 'text' : 'password'"
-                      name="input-10-1"
-                      label="Password"
-                      hint="At least 8 characters"
-                      counter
-                      @click:append="showPassword = !showPassword">
-                    </v-text-field>
-                  </v-col>
                   <v-col cols="12">
                     <v-text-field block
-                      v-model="verify"
+                      v-model="user.verify"
                       :rules="[rules.required, rules.min, passwordMatch]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
@@ -96,10 +98,13 @@
                       @click:append="showPassword = !showPassword">
                     </v-text-field>
                   </v-col>
+
                   <v-spacer></v-spacer>
+
                   <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
                     <v-btn x-large block :disabled="!valid" color="success" @click="register">Register</v-btn>
                   </v-col>
+
                 </v-row>
               </v-form>
             </v-card-text>
@@ -113,7 +118,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import User from '../models/user'
 
 export default {
@@ -124,15 +128,13 @@ export default {
     passwordMatch() {
       return () => this.password === this.verify || "Password must match";
     },
+
     showDialog: {
-      get () {
-        return this.value
-      },
-      set (value) {
-        this.$emit('input', value)
-      }
+      get () { return this.value },
+      set (value) { this.$emit('input', value) }
     }
   },
+
   methods: {
     login() {
       if (this.$refs.loginForm.validate()) {
@@ -150,29 +152,24 @@ export default {
 
     register() {
       if (this.$refs.registerForm.validate()) {
-        let params = {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          password_confimation: this.verify
-        }
-        let url = '/api/registrations'
-
-        axios
-          .post(url, params)
-          .then(response => (console.log(response)))
+        this.$store.dispatch('auth/register', this.user).then(
+          () => {
+            console.warn('success register')
+            this.showDialog = false
+          },
+          error => {
+            console.log(error)
+          }
+        )
       }
     }
   },
+
   data: () => ({
     user: new User({}),
     tab: 0,
     valid: true,
     showPassword: false,
-    name: "",
-    email: "",
-    password: "",
-    verify: "",
     rules: {
       required: value => !!value || "Required.",
       min: v => (v && v.length >= 8) || "Min 8 characters",

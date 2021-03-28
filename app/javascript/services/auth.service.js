@@ -21,13 +21,11 @@ class AuthService {
     localStorage.removeItem('user');
   }
 
-  //register(user) {
-  //return axios.post('/', {
-      //username: user.username,
-      //email: user.email,
-      //password: user.password
-    //});
-  //}
+  register(user) {
+    let url = '/api/registrations/signup'
+
+    return axios.post(url, user)
+  }
 }
 
 export default new AuthService();
