@@ -1,20 +1,39 @@
 <template>
   <div id="app">
     <v-app>
+      <navigation></navigation>
+
       <v-main>
-        <router-view></router-view>
+        <v-layout>
+          Add your components HERE
+        </v-layout>
       </v-main>
+
+      <router-view></router-view>
+
+      <login-modal v-model='showModal'></login-modal>
     </v-app>
   </div>
 </template>
 
 <script>
-export default {}
-</script>
+import LoginModal from './components/sign_in'
+import Navigation from './components/navigation'
 
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+export default {
+  components: {
+    LoginModal,
+    Navigation
+  },
+  data () {
+    return {
+      showModal: !this.$store.state.auth.status.loggedIn
+    }
+  },
+  watch: {
+    '$store.state.auth.status.loggedIn' () {
+      this.showModal = !this.$store.state.auth.status.loggedIn
+    }
+  }
 }
-</style>
+</script>

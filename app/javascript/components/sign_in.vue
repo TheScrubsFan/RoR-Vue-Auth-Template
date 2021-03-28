@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
+  <v-dialog v-model="showDialog" persistent max-width="600px" min-width="360px">
     <div>
       <v-tabs v-model="tab" show-arrows background-color="orange accent-4" icons-and-text dark grow>
         <v-tabs-slider color="purple darken-4"></v-tabs-slider>
@@ -117,19 +117,29 @@ import axios from 'axios'
 import User from '../models/user'
 
 export default {
+  props: {
+     value: Boolean
+  },
   computed: {
     passwordMatch() {
       return () => this.password === this.verify || "Password must match";
     },
+    showDialog: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.$emit('input', value)
+      }
+    }
   },
   methods: {
     login() {
       if (this.$refs.loginForm.validate()) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            //this.$router.push('/profile');
-            console.warn('success')
-            //this.dialog = false
+            console.warn('success login')
+            this.showDialog = false
           },
           error => {
             cosole.log(error)
@@ -156,7 +166,6 @@ export default {
   },
   data: () => ({
     user: new User({}),
-    dialog: true,
     tab: 0,
     valid: true,
     showPassword: false,
