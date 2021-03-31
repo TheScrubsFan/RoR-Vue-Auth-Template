@@ -14,8 +14,11 @@ import store from 'store'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import VueToast from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 Vue.use(Vuetify)
+Vue.use(VueToast)
 
 
 document.addEventListener('DOMContentLoaded', () => {

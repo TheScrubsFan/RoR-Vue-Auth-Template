@@ -140,11 +140,12 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            console.warn('success login')
+            this.$toast.success('Успешный вход!')
             this.showDialog = false
           },
           error => {
-            cosole.log(error)
+            this.$toast.error(error, {duration: 7000})
+            console.log(error)
           }
         )
       }
@@ -154,10 +155,11 @@ export default {
       if (this.$refs.registerForm.validate()) {
         this.$store.dispatch('auth/register', this.user).then(
           () => {
-            console.warn('success register')
+            this.$toast.success('Успешная регистрация!')
             this.showDialog = false
           },
           error => {
+            this.$toast.error(error, {duration: 7000})
             console.log(error)
           }
         )

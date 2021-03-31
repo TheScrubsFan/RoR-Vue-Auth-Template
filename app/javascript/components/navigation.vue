@@ -20,13 +20,13 @@
       <v-spacer></v-spacer>
 
       <v-list nav dense>
-        <v-list-item link class='orange'>
+        <v-list-item link class='orange' @click='signOut'>
           <v-list-item-icon>
             <v-icon>mdi-exit-to-app</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click='signOut'>Выход</v-list-item-title>
+            <v-list-item-title>Выход</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -39,7 +39,15 @@
 export default {
   methods: {
     signOut () {
-      this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/logout').then(
+        () => {
+          this.$toast.warning('Вы вышли из аккаунта!', {duration: 7000})
+        },
+        error => {
+          this.$toast.error(error, {duration: 7000})
+          console.log(error)
+        }
+      )
     }
   },
 
