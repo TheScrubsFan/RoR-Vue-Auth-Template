@@ -12,12 +12,12 @@ module Api
     end
 
     def refresh
-      payload = JWT.decode(params.require(:refresh_token), jwt_key)[0]
+      payload = JWT.decode(params.require(:refresh_token), jwt_key).first
+      user = User.not_deleted.find payload['user_id']
 
-      raise AuthenticateError unless current_user
-      raise AuthenticateError unless current_user.id == payload['user_id']
+      raise AuthenticateError unless user
 
-      render json: JwtGenerator.jwt_pair(current_user)
+      render json: JwtGenerator.jwt_pair(user)
     end
   end
 end
