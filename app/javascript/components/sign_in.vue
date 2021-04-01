@@ -88,7 +88,7 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field block
-                      v-model="user.verify"
+                      v-model="user.passwordConfirmation"
                       :rules="[rules.required, rules.min, passwordMatch]"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
@@ -126,7 +126,7 @@ export default {
   },
   computed: {
     passwordMatch() {
-      return () => this.password === this.verify || "Password must match";
+      return () => this.password === this.passwordConfirmation || "Password must match";
     },
 
     showDialog: {

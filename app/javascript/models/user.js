@@ -4,6 +4,6 @@ export default class User {
     this.name = params.name
     this.email = params.email
     this.password = params.password
-    this.password_confirmation = params.password_confirmation
+    this.passwordConfirmation = params.passwordConfirmation
   }
 }
