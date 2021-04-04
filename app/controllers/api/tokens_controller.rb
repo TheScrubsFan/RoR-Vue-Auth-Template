@@ -8,16 +8,27 @@ module Api
       raise AuthenticateError unless user
       raise AuthenticateError unless user.password == params.require(:password)
 
-      render json: JwtGenerator.jwt_pair(user)
+      response.set_cookie :refresh_token, { value: JwtGenerator.refresh_token(user), httponly: true }
+
+      render json: {
+        access_token: JwtGenerator.access_token(user)
+      }
     end
 
     def refresh
-      payload = JWT.decode(params.require(:refresh_token), jwt_key).first
+      parsed_cookies = CookieParser.parse request.headers['Cookie']
+      refresh_token = parsed_cookies['refresh_token']
+      payload = JWT.decode(refresh_token, jwt_key).first
       user = User.not_deleted.find payload['user_id']
 
-      raise AuthenticateError unless user
+      raise AuthenticateError unless user.id == payload['user_id']
+      raise AuthenticateError unless payload['scope'] == 'api'
 
-      render json: JwtGenerator.jwt_pair(user)
+      response.set_cookie :refresh_token, { value: JwtGenerator.refresh_token(user), httponly: true }
+
+      render json: {
+        access_token: JwtGenerator.access_token(user)
+      }
     end
   end
 end
