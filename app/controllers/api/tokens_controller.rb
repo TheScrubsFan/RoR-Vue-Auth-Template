@@ -1,6 +1,6 @@
 module Api
   class TokensController < ApiController
-    skip_before_action :authenticate!, only: %i[create refresh]
+    skip_before_action :authenticate!, only: %i[create refresh signout]
 
     def create
       user = User.not_deleted.find_by(email: params.require(:email))
@@ -8,7 +8,7 @@ module Api
       raise AuthenticateError unless user
       raise AuthenticateError unless user.password == params.require(:password)
 
-      response.set_cookie :refresh_token, { value: JwtGenerator.refresh_token(user), httponly: true }
+      jwt_cookie user
 
       render json: {
         access_token: JwtGenerator.access_token(user)
@@ -16,19 +16,28 @@ module Api
     end
 
     def refresh
-      parsed_cookies = CookieParser.parse request.headers['Cookie']
-      refresh_token = parsed_cookies['refresh_token']
-      payload = JWT.decode(refresh_token, jwt_key).first
-      user = User.not_deleted.find payload['user_id']
+      user_id = DecodeRefresh.user_id request, jwt_key
+      user = User.not_deleted.find_by id: user_id
 
-      raise AuthenticateError unless user.id == payload['user_id']
+      raise AuthenticateError unless user
       raise AuthenticateError unless payload['scope'] == 'api'
 
-      response.set_cookie :refresh_token, { value: JwtGenerator.refresh_token(user), httponly: true }
+      jwt_cookie user
 
       render json: {
         access_token: JwtGenerator.access_token(user)
       }
     end
+
+    def signout
+      response.set_cookie :refresh_token, {
+        value: 'not_exist',
+        httponly: true,
+        path: '/'
+      }
+
+      render json: 'ok'
+    end
+
   end
 end

@@ -5,7 +5,11 @@ module Api
     def signup
       user = User.create params_for_create
 
-      render json: JwtGenerator.jwt_pair(user)
+      jwt_cookie user
+
+      render json: {
+        access_token: JwtGenerator.access_token(user)
+      }
     end
 
     private

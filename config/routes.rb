@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     post 'tokens/create'
     post 'tokens/refresh'
+    post 'tokens/signout'
     post 'registrations/signup'
   end
 

@@ -4,8 +4,11 @@ module CookieParser
       cookie_string
         .split('; ')
         .map { |c| c.split('=') }
-        .inject({}) { |result, element| result[element.first] = element.last; result }
+        .each_with_object({}) do |element, result|
+          result[element.first] = element.last
+
+          result
+        end
     end
   end
 end
-

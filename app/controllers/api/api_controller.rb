@@ -23,20 +23,28 @@ module Api
       ENV.fetch('SECRET_KEY_BASE')
     end
 
+    def jwt_cookie(user)
+      response.set_cookie :refresh_token, {
+        value: JwtGenerator.refresh_token(user),
+        httponly: true,
+        path: '/'
+      }
+    end
+
     def not_authenticated
-      render plain: 'Not Authenticated', status: 401
+      render plain: 'Not Authenticated', status: :unauthorized
     end
 
     def not_authorized
-      render plain: 'Not Authorized', status: 403
+      render plain: 'Not Authorized', status: :forbidden
     end
 
     def unprocessable_entity
-      render plain: 'Unprocessable Entity', status: 422
+      render plain: 'Unprocessable Entity', status: :unprocessable_entity
     end
 
     def not_found
-      render plain: 'Not Found', status: 404
+      render plain: 'Not Found', status: :not_found
     end
   end
 end

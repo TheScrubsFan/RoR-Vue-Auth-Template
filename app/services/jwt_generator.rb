@@ -34,4 +34,3 @@ module JwtGenerator
     end
   end
 end
-
