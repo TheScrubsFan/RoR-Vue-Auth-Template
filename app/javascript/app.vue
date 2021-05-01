@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Interceptors from './services/interceptors.service'
 import LoginModal from './components/sign_in'
 import Navigation from './components/navigation'
 
@@ -25,14 +27,40 @@ export default {
     LoginModal,
     Navigation
   },
+  created() {
+    Interceptors.setRefresh()
+
+    this.$store.dispatch('auth/refresh')
+      .then(
+        () => {
+          const token = this.$store.getters['auth/accessToken']
+
+          Interceptors.setTokens(token)
+          axios.get('api/ola')
+        },
+        error => {
+          this.$toast.error(error, {duration: 7000})
+          console.log(error)
+        }
+      )
+  },
   data () {
     return {
-      showModal: !this.$store.state.auth.status.loggedIn
+      showModal: null
     }
   },
+  methods: {
+    setShowModal() {
+      if (this.$store.state.auth.loggedIn != null)
+        this.showModal = !this.$store.state.auth.loggedIn
+    }
+  },
+  mounted () {
+    this.setShowModal()
+  },
   watch: {
-    '$store.state.auth.status.loggedIn' () {
-      this.showModal = !this.$store.state.auth.status.loggedIn
+    '$store.state.auth.loggedIn' () {
+      this.setShowModal()
     }
   }
 }

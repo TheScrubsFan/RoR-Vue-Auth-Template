@@ -1,24 +1,22 @@
-import axios from 'axios';
+import axios from 'axios'
 
 class AuthService {
   login(user) {
     let url = '/api/tokens/create'
 
-    return axios
-      .post(url, user)
-      .then(
-        response => {
-          if (response.data.access_token) {
-            localStorage.setItem('user', JSON.stringify(response.data));
-          }
-
-          return response.data
-        }
-      )
+    return axios.post(url, user)
   }
 
   logout() {
-    localStorage.removeItem('user');
+    let url = '/api/tokens/signout'
+
+    return axios.post(url)
+  }
+
+  refresh() {
+    let url = '/api/tokens/refresh'
+
+    return axios.post(url)
   }
 
   register(user) {
@@ -28,4 +26,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export default new AuthService()
