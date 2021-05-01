@@ -30,6 +30,8 @@ export default {
   created() {
     Interceptors.setRefresh()
 
+    this.$toasted.show('hello billo')
+    this.$vToastify.success("easy-peasy");
     this.$store.dispatch('auth/refresh')
       .then(
         () => {

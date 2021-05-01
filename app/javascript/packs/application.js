@@ -16,12 +16,17 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
+import Toasted from 'vue-toasted'
+import VueToastify from "vue-toastify";
+
 
 Vue.use(Vuetify)
 Vue.use(VueToast)
 
 
 document.addEventListener('DOMContentLoaded', () => {
+Vue.use(Toasted)
+Vue.use(VueToastify);
   const el = document.body.appendChild(document.createElement('application'))
   const app = new Vue({
     router,
