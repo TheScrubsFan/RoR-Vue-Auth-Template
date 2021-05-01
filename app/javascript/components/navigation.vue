@@ -41,10 +41,16 @@ export default {
     signOut () {
       this.$store.dispatch('auth/logout').then(
         () => {
-          this.$toast.warning('Вы вышли из аккаунта!', {duration: 7000})
+          this.$vToastify.warning({
+            body: 'Вы вышли из аккаунта!',
+            title: 'Внимание'
+          })
         },
         error => {
-          this.$toast.error(error, {duration: 7000})
+          this.$vToastify.error({
+            body: error,
+            title: 'Ошибка!'
+          })
           console.log(error)
         }
       )

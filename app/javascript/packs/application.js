@@ -14,19 +14,19 @@ import store from 'store'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import VueToast from 'vue-toast-notification'
-import 'vue-toast-notification/dist/theme-sugar.css'
-import Toasted from 'vue-toasted'
-import VueToastify from "vue-toastify";
+import VueToastify from 'vue-toastify'
 
-
-Vue.use(Vuetify)
-Vue.use(VueToast)
 
 
 document.addEventListener('DOMContentLoaded', () => {
-Vue.use(Toasted)
-Vue.use(VueToastify);
+  Vue.use(Vuetify)
+  Vue.use(VueToastify, {
+    duration: 7000,
+    theme: 'light',
+    hideProgressbar: true
+  })
+
+
   const el = document.body.appendChild(document.createElement('application'))
   const app = new Vue({
     router,

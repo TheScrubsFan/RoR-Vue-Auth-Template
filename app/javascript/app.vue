@@ -30,8 +30,6 @@ export default {
   created() {
     Interceptors.setRefresh()
 
-    this.$toasted.show('hello billo')
-    this.$vToastify.success("easy-peasy");
     this.$store.dispatch('auth/refresh')
       .then(
         () => {
@@ -41,7 +39,10 @@ export default {
           axios.get('api/ola')
         },
         error => {
-          this.$toast.error(error, {duration: 7000})
+          this.$vToastify.error({
+            body: error,
+            title: 'Ошибка!'
+          })
           console.log(error)
         }
       )

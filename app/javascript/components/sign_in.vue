@@ -140,11 +140,17 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            this.$toast.success('Успешный вход!')
+            this.$vToastify.success({
+              body: 'Успешный вход!',
+              defaultTitle: false
+            })
             this.showDialog = false
           },
           error => {
-            this.$toast.error(error, {duration: 7000})
+            this.$vToastify.error({
+              body: error,
+              title: 'Ошибка!'
+            })
             console.log(error)
           }
         )
@@ -155,11 +161,17 @@ export default {
       if (this.$refs.registerForm.validate()) {
         this.$store.dispatch('auth/register', this.user).then(
           () => {
-            this.$toast.success('Успешная регистрация!')
+            this.$vToastify.success({
+              body: 'Успешная регистрация!',
+              defaultTitle: false
+            })
             this.showDialog = false
           },
           error => {
-            this.$toast.error(error, {duration: 7000})
+            this.$vToastify.error({
+              body: error,
+              title: 'Ошибка!'
+            })
             console.log(error)
           }
         )
