@@ -16,7 +16,7 @@ module Api
     end
 
     def refresh
-      payload = DecodeRefresh.user_id request, jwt_key
+      payload = DecodeRefresh.payload request, jwt_key
       user = User.not_deleted.find_by id: payload['user_id']
 
       raise AuthenticateError unless user
