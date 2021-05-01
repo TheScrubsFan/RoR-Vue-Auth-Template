@@ -4,6 +4,7 @@ module DecodeRefresh
       parsed_cookies = CookieParser.parse request.headers['Cookie']
       refresh_token = parsed_cookies['refresh_token']
 
+      return {} unless refresh_token
       return {} if refresh_token == 'not_exist'
 
       JWT.decode(refresh_token, jwt_key).first
