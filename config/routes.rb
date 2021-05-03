@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     post 'tokens/create'
     post 'tokens/refresh'
     post 'tokens/signout'
+    post 'tokens/ola'
     post 'registrations/signup'
   end
 

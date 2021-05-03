@@ -1,18 +1,18 @@
 import axios from 'axios'
 import store from 'store'
 import AuthService from '../services/auth.service'
+import humps from 'humps'
 
 class Interceptors {
-  setTokens(token) {
+  setTokens(data) {
     axios.interceptors.request.use(function(config) {
-      if(token) {
-        config.headers.Authorization = `Bearer ${token.access_token}`
+      if(data) {
+        config.headers.Authorization = `Bearer ${data.accessToken}`
       }
 
       return config
     }, function(err) {
       return Promise.reject(err)
-
     })
   }
 
@@ -37,7 +37,7 @@ class Interceptors {
         return AuthService.refresh()
           .then((token) => {
             const config = error.config;
-            config.headers['Authorization'] = `Bearer ${token.access_token}`
+            config.headers['Authorization'] = `Bearer ${token.accessToken}`
             store.dispatch('auth/login', token)
 
             return new Promise((resolve, reject) => {
@@ -54,6 +54,34 @@ class Interceptors {
           })
       }
     )
+  }
+
+  transformKeys() {
+    axios.defaults.transformResponse = [(data, headers) => {
+      try {
+        var parsedData = JSON.parse(data)
+
+        if (parsedData && headers['content-type'].includes('application/json')) {
+          return humps.camelizeKeys(parsedData)
+        }
+      }
+      catch (e) { }
+
+      return data
+    }]
+
+    // TODO: make smth with get query
+    axios.defaults.transformRequest = [(data) => {
+      if (data) {
+        let formData = new FormData()
+
+        Object.keys(data).forEach(attr => {
+          formData.append(humps.decamelize(attr), data[attr])
+        })
+
+        return formData
+      }
+    }]
   }
 }
 

@@ -63,7 +63,7 @@ export const auth = {
   },
 
   getters: {
-    accessToken: state => {
+    user: state => {
       return state.user
     }
   },

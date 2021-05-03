@@ -39,5 +39,9 @@ module Api
       render json: 'ok'
     end
 
+    def ola
+      render json: 'ok'
+    end
+
   end
 end

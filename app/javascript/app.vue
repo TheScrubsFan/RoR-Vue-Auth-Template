@@ -28,15 +28,16 @@ export default {
     Navigation
   },
   created() {
+    Interceptors.transformKeys()
     Interceptors.setRefresh()
 
     this.$store.dispatch('auth/refresh')
       .then(
         () => {
-          const token = this.$store.getters['auth/accessToken']
+          const user = this.$store.getters['auth/user']
 
-          Interceptors.setTokens(token)
-          axios.get('api/ola')
+          Interceptors.setTokens(user)
+          axios.post('api/tokens/ola', {olaOla: 'viola'})
         },
         error => {
           this.$vToastify.error({
