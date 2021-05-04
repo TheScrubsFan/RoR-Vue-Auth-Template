@@ -5,6 +5,7 @@ module Api
     before_action :authenticate!
 
     rescue_from Api::AuthenticateError, with: :not_authenticated
+    rescue_from Api::TokenError, with: :token_expired
     rescue_from ActiveRecord::RecordNotUnique, with: :unprocessable_entity
     rescue_from ActiveRecord::NotNullViolation, with: :unprocessable_entity
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
@@ -33,6 +34,10 @@ module Api
 
     def not_authenticated
       render plain: 'Not Authenticated', status: :unauthorized
+    end
+
+    def token_expired
+      render plain: 'Token Expired', status: :unauthorized
     end
 
     def not_authorized

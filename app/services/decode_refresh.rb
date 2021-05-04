@@ -7,7 +7,11 @@ module DecodeRefresh
       return {} unless refresh_token
       return {} if refresh_token == 'not_exist'
 
-      JWT.decode(refresh_token, jwt_key).first
+      begin
+        JWT.decode(refresh_token, jwt_key).first
+      rescue JWT::ExpiredSignature
+        raise MobileApi::TokenError
+      end
     end
   end
 end
