@@ -4,8 +4,12 @@ FactoryBot.define do
     email { Faker::Internet.email }
     name { Faker::Name.first_name }
 
-    factory :invalid_user do
+    factory :without_email do
       email nil
+    end
+
+    factory :without_password do
+      password nil
     end
   end
 end
