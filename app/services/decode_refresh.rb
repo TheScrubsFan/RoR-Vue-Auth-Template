@@ -10,7 +10,7 @@ module DecodeRefresh
       begin
         JWT.decode(refresh_token, jwt_key).first
       rescue JWT::ExpiredSignature
-        raise MobileApi::TokenError
+        raise Api::TokenError
       end
     end
   end
